@@ -30,14 +30,19 @@ fail() { echo -e "${RED}[FAIL]${NC} $1"; }
 check_prereqs() {
   local errors=0
 
-  # Check hook-runner is installed
+  # Check hook-runner is installed — auto-install if missing
   if [ ! -f "${HOOKS_BASE}/../run-pretooluse.js" ] && [ ! -f "${HOOKS_BASE}/../run-PreToolUse.js" ]; then
-    # Check for any run-*.js runner
     if ! ls "${HOME}/.claude/hooks/run-"*.js >/dev/null 2>&1; then
-      fail "hook-runner not installed. Install from: grobomo/hook-runner"
-      echo "  Hook-runner provides the run-modules/ system that SHTD plugs into."
-      echo "  Without it, SHTD modules won't be loaded by Claude Code."
-      ((errors++))
+      warn "hook-runner not installed. Auto-installing..."
+      local tmpdir=$(mktemp -d)
+      if git clone --depth 1 https://github.com/grobomo/hook-runner.git "$tmpdir" 2>/dev/null && \
+         (bash "$tmpdir/install.sh" 2>/dev/null || node "$tmpdir/setup.js" 2>/dev/null); then
+        ok "hook-runner auto-installed"
+      else
+        fail "hook-runner auto-install failed. Install manually: grobomo/hook-runner"
+        ((errors++))
+      fi
+      rm -rf "$tmpdir"
     fi
   fi
 
