@@ -26,8 +26,7 @@ spec-hook/                    # grobomo/spec-hook (PUBLIC repo)
 │   │   └── secret-scan-gate.js   # Block push without scan
 │   ├── PostToolUse/
 │   │   └── audit-logger.js       # Log all workflow events
-│   ├── SessionStart/
-│   │   └── task-claim.js         # Claim next task at session start
+│   │   └── task-claim.js         # Claim next task before code edit
 │   └── Stop/
 │       └── task-release.js       # Release claim on session end
 ├── rules/
