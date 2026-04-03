@@ -7,14 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-function getAudit() {
-  const candidates = [
-    path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'shtd-flow', 'lib', 'audit.js'),
-    path.join(__dirname, '..', '..', 'lib', 'audit.js'),
-  ];
-  for (const c of candidates) { try { return require(c); } catch(e) {} }
-  return { logEvent: () => {} };
-}
+const getAudit = require(path.join(__dirname, '..', '..', 'lib', 'get-audit.js'));
 
 module.exports = function(input) {
   const tool = input?.tool_name;

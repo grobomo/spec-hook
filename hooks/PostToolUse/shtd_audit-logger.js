@@ -3,15 +3,7 @@
 // Logs workflow-significant events to ~/.claude/shtd-flow/audit.jsonl
 
 const path = require('path');
-
-function getAudit() {
-  const candidates = [
-    path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'shtd-flow', 'lib', 'audit.js'),
-    path.join(__dirname, '..', '..', 'lib', 'audit.js'),
-  ];
-  for (const c of candidates) { try { return require(c); } catch(e) {} }
-  return { logEvent: () => {} };
-}
+const getAudit = require(path.join(__dirname, '..', '..', 'lib', 'get-audit.js'));
 
 module.exports = function(input) {
   const tool = input?.tool_name;
