@@ -10,9 +10,10 @@
 #   bash install.sh --uninstall  # Remove SHTD modules (keeps hook-runner)
 #
 # What it installs:
-#   ~/.claude/shtd-flow/lib/          audit.js, task_claims.py
-#   ~/.claude/hooks/run-modules/*/    shtd_*.js modules (8 PreToolUse, 1 PostToolUse, 1 Stop)
-#   ~/.claude/shtd-flow/rules/        shtd-flow.md workflow rules
+#   ~/.claude/shtd-flow/lib/          audit.js, task_claims.py, workflow.js
+#   ~/.claude/shtd-flow/scripts/      shtd-status.sh, shtd-workflow.sh
+#   ~/.claude/hooks/run-modules/*/    shtd_*.js modules (9 PreToolUse, 1 PostToolUse, 1 Stop)
+#   ~/.claude/shtd-flow/rules/        workflow rules
 
 set -euo pipefail
 
@@ -73,9 +74,20 @@ install_lib() {
   cp "${SCRIPT_DIR}/lib/task_claims.py" "${SHTD_HOME}/lib/task_claims.py"
   ok "lib/task_claims.py"
 
+  cp "${SCRIPT_DIR}/lib/workflow.js" "${SHTD_HOME}/lib/workflow.js"
+  ok "lib/workflow.js"
+
   # Create data directories
   mkdir -p "${SHTD_HOME}/claims"
   ok "claims/ directory"
+
+  # Install CLI scripts
+  mkdir -p "${SHTD_HOME}/scripts"
+  for s in "${SCRIPT_DIR}/scripts"/shtd-*.sh; do
+    [ -f "$s" ] || continue
+    cp "$s" "${SHTD_HOME}/scripts/$(basename "$s")"
+    ok "scripts/$(basename "$s")"
+  done
 }
 
 install_hooks() {
@@ -116,7 +128,7 @@ verify_install() {
   local errors=0
 
   # Check lib files
-  for f in audit.js task_claims.py; do
+  for f in audit.js task_claims.py workflow.js; do
     if [ -f "${SHTD_HOME}/lib/${f}" ]; then
       ok "lib/${f}"
     else
@@ -135,6 +147,7 @@ verify_install() {
     "PreToolUse/shtd_remote-tracking-gate.js"
     "PreToolUse/shtd_secret-scan-gate.js"
     "PreToolUse/shtd_task-claim.js"
+    "PreToolUse/shtd_workflow-gate.js"
     "PostToolUse/shtd_audit-logger.js"
     "Stop/shtd_task-release.js"
   )
