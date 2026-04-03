@@ -1,0 +1,34 @@
+name: test-claude-install
+description: Spin up EC2, install Claude Code + SHTD, test settings, create AMI
+version: 1
+steps:
+  - id: provision
+    name: Launch EC2 instance via cloud-claude
+    gate:
+      require_files: []
+    completion:
+      require_files: ["instance-id.txt"]
+  - id: install
+    name: Install Claude Code and SHTD flow on instance
+    gate:
+      require_step: provision
+    completion:
+      require_files: ["install-verified.txt"]
+  - id: test
+    name: Run SHTD install verification on remote
+    gate:
+      require_step: install
+    completion:
+      require_files: [".test-results/remote-install.passed"]
+  - id: snapshot
+    name: Create AMI golden image
+    gate:
+      require_step: test
+    completion:
+      require_files: ["ami-id.txt"]
+  - id: cleanup
+    name: Terminate EC2 instance
+    gate:
+      require_step: snapshot
+    completion:
+      require_files: ["cleanup-done.txt"]

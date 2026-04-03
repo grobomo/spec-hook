@@ -2,3 +2,11 @@ archive/
 node_modules/
 .test-results/
 *.log
+.shtd-workflow-state.json
+instance-id.txt
+instance-ip.txt
+instance-name.txt
+ami-id.txt
+ami-name.txt
+install-verified.txt
+cleanup-done.txt
