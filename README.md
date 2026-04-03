@@ -1,0 +1,135 @@
+# spec-hook (SHTD Flow)
+
+Spec-Hook-Test-Driven workflow enforcement for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). One command installs the entire spec→hook→test→PR pipeline with full audit trail.
+
+## What It Does
+
+SHTD Flow enforces a disciplined development workflow through Claude Code hooks:
+
+1. **Write specs first** — no code without a spec
+2. **Write tests first** — no implementation without a test
+3. **Feature branches** — no code on main
+4. **One PR per task** — task ID required in PR title
+5. **E2E before merge** — integration test evidence required
+6. **Secret scan** — blocks push without CI scan
+7. **Multi-tab negotiation** — auto-claims tasks, prevents duplicate work
+8. **Enforceable workflows** — ordered step pipelines with gate conditions
+9. **Full audit trail** — every workflow event logged to JSONL
+
+## Install
+
+Requires: [Node.js](https://nodejs.org/), [Python 3](https://python.org/), git
+
+```bash
+git clone https://github.com/grobomo/spec-hook.git
+cd spec-hook
+bash install.sh
+```
+
+The installer auto-bootstraps [hook-runner](https://github.com/grobomo/hook-runner) if not already installed.
+
+### Verify
+
+```bash
+bash install.sh --check
+```
+
+### Uninstall
+
+```bash
+bash install.sh --uninstall
+```
+
+## Hook Modules
+
+| Module | Enforces |
+|--------|----------|
+| `shtd_spec-gate` | Specs must exist before code edits |
+| `shtd_test-first-gate` | Test file before implementation |
+| `shtd_branch-gate` | No code on main branch |
+| `shtd_pr-per-task-gate` | Task ID in PR title |
+| `shtd_e2e-merge-gate` | E2E evidence before feature merge |
+| `shtd_remote-tracking-gate` | Branch must track remote |
+| `shtd_secret-scan-gate` | CI scan required for push |
+| `shtd_task-claim` | Auto-claim tasks, prevent tab duplication |
+| `shtd_workflow-gate` | Enforce workflow step order |
+| `shtd_audit-logger` | Log all workflow events |
+| `shtd_task-release` | Release task claim on exit |
+
+## Workflows
+
+Workflows are enforceable step pipelines defined in YAML. Unlike Claude Code skills (advisory), workflows block out-of-order work.
+
+```bash
+# List available workflows
+bash ~/.claude/shtd-flow/scripts/shtd-workflow.sh list
+
+# Start a workflow
+bash ~/.claude/shtd-flow/scripts/shtd-workflow.sh start <name>
+
+# Check current step
+bash ~/.claude/shtd-flow/scripts/shtd-workflow.sh status
+
+# Mark step complete
+bash ~/.claude/shtd-flow/scripts/shtd-workflow.sh complete <step-id>
+```
+
+### Define Custom Workflows
+
+Add YAML files to `workflows/` in your project or `~/.claude/shtd-flow/workflows/` globally:
+
+```yaml
+name: deploy-pipeline
+steps:
+  - id: build
+    name: Build artifacts
+    gate:
+      require_files: []
+    completion:
+      require_files: ["dist/bundle.js"]
+  - id: test
+    name: Run tests
+    gate:
+      require_step: build
+    completion:
+      require_files: [".test-results/e2e.passed"]
+  - id: deploy
+    name: Deploy to production
+    gate:
+      require_step: test
+    completion:
+      require_files: ["deploy-receipt.txt"]
+```
+
+## Multi-Tab Task Negotiation
+
+When multiple Claude Code sessions work on the same project:
+
+- Each session auto-claims the next unchecked task from TODO.md
+- Other sessions see the claim and work on different tasks
+- Claims auto-release when sessions end or processes die
+- Dead session cleanup via PID checking
+
+```bash
+# Check claim status
+python ~/.claude/shtd-flow/lib/task_claims.py status --project-dir .
+```
+
+## Audit Log
+
+All workflow events are logged to `~/.claude/shtd-flow/audit.jsonl`:
+
+```bash
+bash ~/.claude/shtd-flow/scripts/shtd-status.sh /path/to/project
+```
+
+## Cross-Platform
+
+Tested on:
+- Windows (Git Bash)
+- Linux (Ubuntu, Docker containers)
+- CCC worker instances (Docker + native)
+
+## License
+
+MIT

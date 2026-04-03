@@ -16,6 +16,6 @@ Portable, installable workflow enforcement system for Claude Code. One setup scr
 - [x] T008 Workflow CLI (shtd-workflow.sh) — start/status/complete/reset
 - [x] T009 First workflow: test-claude-install with step scripts
 - [x] T010 Update installer and CLAUDE.md for workflow engine
-- [ ] T011 Run test-claude-install workflow on EC2 — validate full pipeline
-- [ ] T012 Merge feature branches to main, push to grobomo/spec-hook
-- [ ] T013 Publish as installable plugin (marketplace or README install instructions)
+- [x] T011 Run test-claude-install workflow on EC2 — validate full pipeline
+- [x] T012 Merge feature branches to main, push to grobomo/spec-hook
+- [ ] T013 Publish as installable plugin (README install instructions)
