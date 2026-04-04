@@ -11,3 +11,4 @@ ami-id.txt
 ami-name.txt
 install-verified.txt
 cleanup-done.txt
+lib/__pycache__/
