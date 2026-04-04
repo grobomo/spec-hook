@@ -40,7 +40,7 @@ check_prereqs() {
         ok "hook-runner auto-installed"
       else
         fail "hook-runner auto-install failed. Install manually: grobomo/hook-runner"
-        ((errors++))
+        errors=$((errors + 1))
       fi
       rm -rf "$tmpdir"
     fi
@@ -56,13 +56,13 @@ check_prereqs() {
   # Check Python (needed for task_claims.py)
   if ! command -v python >/dev/null 2>&1 && ! command -v python3 >/dev/null 2>&1; then
     fail "Python not found. task_claims.py requires Python 3."
-    ((errors++))
+    errors=$((errors + 1))
   fi
 
   # Check Node.js (needed for hooks)
   if ! command -v node >/dev/null 2>&1; then
     fail "Node.js not found. Hook modules require Node.js."
-    ((errors++))
+    errors=$((errors + 1))
   fi
 
   return $errors
@@ -152,7 +152,7 @@ verify_install() {
       ok "lib/${f}"
     else
       fail "lib/${f} missing"
-      ((errors++))
+      errors=$((errors + 1))
     fi
   done
 
@@ -176,7 +176,7 @@ verify_install() {
       ok "${hook}"
     else
       fail "${hook} missing"
-      ((errors++))
+      errors=$((errors + 1))
     fi
   done
 
@@ -185,11 +185,11 @@ verify_install() {
   for rule in "${SHTD_HOME}/rules"/shtd-*.md; do
     [ -f "$rule" ] || continue
     ok "rules/$(basename "$rule")"
-    ((rule_count++))
+    rule_count=$((rule_count + 1))
   done
   if [ $rule_count -eq 0 ]; then
     fail "No rule files found in ${SHTD_HOME}/rules/"
-    ((errors++))
+    errors=$((errors + 1))
   fi
 
   # Test task_claims.py
@@ -198,22 +198,26 @@ verify_install() {
     ok "task_claims.py runs"
   else
     fail "task_claims.py fails to run"
-    ((errors++))
+    errors=$((errors + 1))
   fi
 
-  # Test audit.js
-  if node -e "require('${SHTD_HOME}/lib/audit.js')" 2>/dev/null; then
+  # Test audit.js (convert Git Bash /c/ paths to C:/ for Node.js on Windows)
+  local node_lib_path="${SHTD_HOME}/lib/audit.js"
+  if [[ "$node_lib_path" =~ ^/([a-zA-Z])/ ]]; then
+    node_lib_path="${BASH_REMATCH[1]}:${node_lib_path:2}"
+  fi
+  if node -e "require('${node_lib_path}')" 2>/dev/null; then
     ok "audit.js loads"
   else
     fail "audit.js fails to load"
-    ((errors++))
+    errors=$((errors + 1))
   fi
 
   echo ""
   if [ $errors -eq 0 ]; then
     echo -e "${GREEN}=== SHTD Flow installed successfully ===${NC}"
     echo ""
-    echo "Modules installed: $(find "${HOOKS_BASE}" -name 'shtd_*.js' 2>/dev/null | wc -l)"
+    echo "Modules installed: $(find "${HOOKS_BASE}" -name 'shtd_*.js' -not -path '*/archive/*' 2>/dev/null | wc -l)"
     echo "Audit log: ${SHTD_HOME}/audit.jsonl"
     echo "Task claims: ${SHTD_HOME}/claims/"
     echo ""
@@ -236,7 +240,7 @@ uninstall() {
       mkdir -p "${HOOKS_BASE}/${event}/archive"
       mv "$f" "${HOOKS_BASE}/${event}/archive/"
       ok "Archived: ${event}/$(basename "$f")"
-      ((count++))
+      count=$((count + 1))
     done
   done
 
