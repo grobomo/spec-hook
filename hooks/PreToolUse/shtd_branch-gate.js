@@ -22,7 +22,7 @@ module.exports = function(input) {
 
     if (branch === 'main' || branch === 'master') {
       return {
-        blocked: true,
+        decision: 'block',
         reason: `[shtd] On ${branch} branch. Create a feature branch first: git checkout -b <NNN>-<feature-name>`
       };
     }

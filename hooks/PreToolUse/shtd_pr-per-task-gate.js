@@ -15,7 +15,7 @@ module.exports = function(input) {
     const title = titleMatch[1];
     if (!/T\d+/i.test(title)) {
       return {
-        blocked: true,
+        decision: 'block',
         reason: '[shtd] PR title must include task ID (e.g. "T001: Add config parser"). One PR per task.'
       };
     }

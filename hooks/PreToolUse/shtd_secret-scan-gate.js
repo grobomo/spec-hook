@@ -17,7 +17,7 @@ module.exports = function(input) {
 
   if (!fs.existsSync(scanFile)) {
     return {
-      blocked: true,
+      decision: 'block',
       reason: '[shtd] No .github/workflows/secret-scan.yml. Add a secret scan CI workflow before pushing.'
     };
   }

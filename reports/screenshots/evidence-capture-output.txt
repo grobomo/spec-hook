@@ -1,0 +1,114 @@
+=============================================
+  SHTD Evidence Capture — Worker 1 (18.219.224.145)
+  2026-04-03 20:48:00
+=============================================
+
+╔══════════════════════════════════════════╗
+║  Evidence 1: SHTD Installation Verified  ║
+╚══════════════════════════════════════════╝
+Worker: ip-172-31-21-27 | 2026-04-04 01:48:06 UTC
+Docker:
+NAMES             STATUS        IMAGE
+claude-portable   Up 19 hours   claude-portable:latest
+
+=== install.sh --check ===
+
+=== Verifying SHTD Flow installation ===
+[0;32m[OK][0m lib/audit.js
+[0;32m[OK][0m lib/task_claims.py
+[0;32m[OK][0m lib/workflow.js
+[0;32m[OK][0m lib/get-audit.js
+[0;32m[OK][0m lib/allowed-paths.js
+[0;32m[OK][0m PreToolUse/shtd_spec-gate.js
+[0;32m[OK][0m PreToolUse/shtd_test-first-gate.js
+[0;32m[OK][0m PreToolUse/shtd_branch-gate.js
+[0;32m[OK][0m PreToolUse/shtd_pr-per-task-gate.js
+[0;32m[OK][0m PreToolUse/shtd_e2e-merge-gate.js
+[0;32m[OK][0m PreToolUse/shtd_remote-tracking-gate.js
+[0;32m[OK][0m PreToolUse/shtd_secret-scan-gate.js
+[0;32m[OK][0m PreToolUse/shtd_task-claim.js
+[0;32m[OK][0m PreToolUse/shtd_workflow-gate.js
+[0;32m[OK][0m PostToolUse/shtd_audit-logger.js
+[0;32m[OK][0m Stop/shtd_task-release.js
+[0;32m[OK][0m rules/shtd-audit-log.md
+
+--- Setting up demo project with git remote ---
+warning: You appear to have cloned an empty repository.
+
+╔══════════════════════════════════════════╗
+║  Evidence 2: branch-gate BLOCKS on main  ║
+╚══════════════════════════════════════════╝
+Project: /tmp/demo-proj
+Branch: master
+specs/: EXISTS | Remote: /tmp/demo-proj.git
+
+>>> Claude tries to Write src/app.js on master <<<
+
+HOOK OUTPUT:
+{
+    "decision": "block",
+    "reason": "[shtd] On master branch. Create a feature branch first: git checkout -b <NNN>-<feature-name>"
+}
+
+>>> BLOCKED by branch-gate: cannot edit code on master
+
+╔══════════════════════════════════════════╗
+║  Evidence 3: spec-gate BLOCKS (no specs) ║
+╚══════════════════════════════════════════╝
+warning: You appear to have cloned an empty repository.
+Project: /tmp/demo-bare
+Branch: 001-add-feature
+specs/: MISSING
+Tracking: origin/001-add-feature
+
+>>> Claude tries to Write src/app.js (no specs/) <<<
+
+HOOK OUTPUT:
+{
+    "decision": "block",
+    "reason": "[shtd] No specs/ directory. Create a spec first: specs/<NNN>-<feature>/spec.md"
+}
+
+>>> BLOCKED by spec-gate: must create specs/ before writing code
+
+╔═══════════════════════════════════════════════╗
+║  Evidence 4: All gates PASS (proper setup)     ║
+╚═══════════════════════════════════════════════╝
+Project: /tmp/demo-proj
+Branch: 001-add-feature
+specs/: EXISTS
+Tracking: origin/001-add-feature
+
+>>> Claude tries to Write src/app.js (all conditions met) <<<
+
+HOOK OUTPUT: <empty — all gates passed>
+
+>>> ALLOWED: feature branch + specs/ + remote tracking = all gates pass
+
+╔══════════════════════════════════════════════════════╗
+║  Evidence 5: remote-tracking-gate BLOCKS untracked   ║
+╚══════════════════════════════════════════════════════╝
+Project: /tmp/demo-proj
+Branch: 002-untracked-branch
+specs/: EXISTS
+Tracking: NONE
+
+>>> Claude tries to Write on untracked feature branch <<<
+
+HOOK OUTPUT:
+{
+    "decision": "block",
+    "reason": "[shtd] Branch \"002-untracked-branch\" doesn't track a remote. Run: git push -u origin 002-untracked-branch"
+}
+
+>>> BLOCKED by remote-tracking-gate: must push -u before editing
+
+╔══════════════════════════════════════════╗
+║  Evidence 6: E2E Test Suite (local)       ║
+╚══════════════════════════════════════════╝
+Test script not found locally
+
+=============================================
+  Evidence capture complete
+  2026-04-03 20:48:12
+=============================================

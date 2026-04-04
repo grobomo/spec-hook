@@ -33,7 +33,7 @@ module.exports = function(input) {
   if (!check.allowed) {
     const reasons = (check.reasons || []).join('; ');
     return {
-      blocked: true,
+      decision: 'block',
       reason: `[shtd] Workflow "${state.workflow}" step "${current}" blocked: ${reasons}`
     };
   }
