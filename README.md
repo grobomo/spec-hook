@@ -132,6 +132,38 @@ When multiple Claude Code sessions work on the same project:
 python ~/.claude/shtd-flow/lib/task_claims.py status --project-dir .
 ```
 
+## Distributed Task Coordination (S3)
+
+For fleet scenarios with multiple machines, `distributed_claims.py` extends local claims with:
+
+- **S3-based locking** — claims stored in S3, visible to all instances
+- **Spec claims** — claim exclusive spec generation rights for a feature
+- **Race detection** — detects when two instances claim the same task within a configurable window
+- **Heartbeat/lease expiry** — stale claims auto-release after timeout (default 10min)
+- **Metrics** — contention rate, task completion time, per-instance activity
+
+```bash
+export SHTD_S3_BUCKET=my-bucket
+export SHTD_INSTANCE_ID=worker-1
+
+# Claim a task
+python lib/distributed_claims.py claim T001 --project my-project --session abc123
+
+# Claim spec generation rights
+python lib/distributed_claims.py spec-claim 042-feature --project my-project --session abc123
+
+# Refresh heartbeat (run every few minutes)
+python lib/distributed_claims.py heartbeat --project my-project
+
+# View all claims and instances
+python lib/distributed_claims.py status --project my-project
+
+# View coordination metrics
+python lib/distributed_claims.py metrics --project my-project
+```
+
+Requires `boto3` and AWS credentials with S3 read/write access.
+
 ## Audit Log
 
 All workflow events are logged to `~/.claude/shtd-flow/audit.jsonl`:
