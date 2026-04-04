@@ -1,0 +1,39 @@
+=== 1. Empty input ===
+  PASS: Empty string returns empty object
+
+=== 2. Comments only ===
+  PASS: Comments-only returns empty object
+
+=== 3. Name only, no steps ===
+  PASS: Name-only workflow has empty steps array
+
+=== 4. Steps with missing fields ===
+  PASS: Missing fields get defaults (name=id, empty gate/completion)
+
+=== 5. Empty steps array ===
+  PASS: Empty steps: produces empty array
+
+=== 6. Inline array values ===
+  PASS: Inline arrays parsed correctly
+
+=== 7. Empty inline array ===
+  PASS: Empty inline array parsed correctly
+
+=== 8. Boolean and null scalars ===
+  PASS: Booleans and null parsed correctly
+
+=== 9. Quoted strings with colons ===
+  PASS: Quoted string with colon preserved
+
+=== 10. Integer values ===
+  PASS: Integers parsed as numbers
+
+=== 11. Duplicate keys — last wins ===
+  PASS: Duplicate keys: last value wins
+
+=== 12. Real workflow file ===
+  PASS: Real workflow parses with all steps
+
+=== Summary ===
+Total: 12 tests
+ALL PASSED

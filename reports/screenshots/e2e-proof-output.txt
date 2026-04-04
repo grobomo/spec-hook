@@ -1,0 +1,54 @@
+
+=== Setup ===
+
+=== 1. spec-gate: blocks code edit without specs/ ===
+  PASS: Write to src/app.js BLOCKED — no specs/ directory
+  PASS: Write to src/app.js ALLOWED — specs/ exists
+
+=== 2. branch-gate: blocks code edit on main ===
+  PASS: Edit on main BLOCKED
+  PASS: TODO.md ALLOWED on main
+  PASS: Edit on feature branch ALLOWED
+
+=== 3. pr-per-task-gate: requires task ID in PR title ===
+  PASS: PR without task ID BLOCKED
+  PASS: PR with T001 in title ALLOWED
+
+=== 4. secret-scan-gate: blocks push without secret-scan.yml ===
+  PASS: Push without secret-scan.yml BLOCKED
+  PASS: Push with secret-scan.yml ALLOWED
+
+=== 5. remote-tracking-gate: blocks edits on untracked branch ===
+  PASS: Write on untracked branch BLOCKED
+  PASS: Block message suggests git push -u
+  PASS: TODO.md ALLOWED on untracked branch
+  PASS: Write on main ALLOWED (always has tracking)
+
+=== 6. e2e-merge-gate: blocks feature merge without evidence ===
+  PASS: Feature merge BLOCKED — no .test-results/ evidence
+  PASS: Block message mentions .test-results/
+  PASS: Feature merge ALLOWED — evidence exists
+  PASS: Task branch merge ALLOWED (not feature branch)
+
+=== 7. workflow-gate: enforces step order ===
+  PASS: Write ALLOWED — build step gate open (no prereqs)
+  PASS: Write ALLOWED — test step gate open (build done)
+  PASS: Write BLOCKED — deploy gate requires test step
+  PASS: Block message mentions missing 'test' step
+
+=== 8. audit-logger: captures workflow events ===
+  PASS: Audit log has 8 events (complete workflow chain)
+  PASS: Audit event chain: spec→tasks→test→branch→blocked→PR→e2e→merge
+  PASS: Events include timestamp and project
+
+=== 9. Full workflow lifecycle via CLI ===
+  PASS: CLI status shows active workflow
+  PASS: CLI status shows build step
+  PASS: CLI complete marks step done
+  PASS: CLI reset clears state
+
+=== Summary ===
+
+Total: 28 tests
+ALL PASSED — every gate blocks when it should, allows when conditions are met,
+audit captures the full chain, and workflow step order is enforced.

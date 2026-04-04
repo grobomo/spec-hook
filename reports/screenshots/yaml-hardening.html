@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html><head><style>
+  body { margin: 0; padding: 0; background: #1e1e2e; }
+  .terminal {
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #cdd6f4;
+    background: #1e1e2e;
+    padding: 20px 24px;
+    white-space: pre;
+    min-width: 800px;
+  }
+  .title-bar {
+    background: #313244;
+    color: #a6adc8;
+    padding: 8px 16px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 13px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #f38ba8; }
+  .dot-y { background: #f9e2af; }
+  .dot-g { background: #a6e3a1; }
+  .content { border-radius: 0 0 8px 8px; overflow: hidden; }
+</style></head><body>
+<div style="padding: 16px; background: #11111b;">
+  <div class="title-bar">
+    <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+    <span>YAML Parser — 12 Edge Case Tests</span>
+  </div>
+  <div class="content">
+    <div class="terminal"><span style="color:#89b4fa;font-weight:bold">=== 1. Empty input ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Empty string returns empty object
+
+<span style="color:#89b4fa;font-weight:bold">=== 2. Comments only ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Comments-only returns empty object
+
+<span style="color:#89b4fa;font-weight:bold">=== 3. Name only, no steps ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Name-only workflow has empty steps array
+
+<span style="color:#89b4fa;font-weight:bold">=== 4. Steps with missing fields ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Missing fields get defaults (name=id, empty gate/completion)
+
+<span style="color:#89b4fa;font-weight:bold">=== 5. Empty steps array ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Empty steps: produces empty array
+
+<span style="color:#89b4fa;font-weight:bold">=== 6. Inline array values ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Inline arrays parsed correctly
+
+<span style="color:#89b4fa;font-weight:bold">=== 7. Empty inline array ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Empty inline array parsed correctly
+
+<span style="color:#89b4fa;font-weight:bold">=== 8. Boolean and null scalars ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Booleans and null parsed correctly
+
+<span style="color:#89b4fa;font-weight:bold">=== 9. Quoted strings with colons ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Quoted string with colon preserved
+
+<span style="color:#89b4fa;font-weight:bold">=== 10. Integer values ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Integers parsed as numbers
+
+<span style="color:#89b4fa;font-weight:bold">=== 11. Duplicate keys — last wins ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Duplicate keys: last value wins
+
+<span style="color:#89b4fa;font-weight:bold">=== 12. Real workflow file ===</span>
+  <span style="color:#a6e3a1">PASS:</span> Real workflow parses with all steps
+
+<span style="color:#89b4fa;font-weight:bold">=== Summary ===</span>
+Total: 12 tests
+<span style="color:#a6e3a1;font-weight:bold">ALL PASSED</span>
+</div>
+  </div>
+</div>
+</body></html>

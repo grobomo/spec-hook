@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html><head><style>
+  body { margin: 0; padding: 0; background: #1e1e2e; }
+  .terminal {
+    font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #cdd6f4;
+    background: #1e1e2e;
+    padding: 20px 24px;
+    white-space: pre;
+    min-width: 800px;
+  }
+  .title-bar {
+    background: #313244;
+    color: #a6adc8;
+    padding: 8px 16px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 13px;
+    border-radius: 8px 8px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: #f38ba8; }
+  .dot-y { background: #f9e2af; }
+  .dot-g { background: #a6e3a1; }
+  .content { border-radius: 0 0 8px 8px; overflow: hidden; }
+</style></head><body>
+<div style="padding: 16px; background: #11111b;">
+  <div class="title-bar">
+    <div class="dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+    <span>CCC Worker 1 — Install Verification</span>
+  </div>
+  <div class="content">
+    <div class="terminal">
+<span style="color:#89b4fa;font-weight:bold">=== Verifying SHTD Flow installation ===</span>
+<span style="color:#a6e3a1">[OK]</span> lib/audit.js
+<span style="color:#a6e3a1">[OK]</span> lib/task_claims.py
+<span style="color:#a6e3a1">[OK]</span> lib/workflow.js
+<span style="color:#a6e3a1">[OK]</span> lib/get-audit.js
+<span style="color:#a6e3a1">[OK]</span> lib/allowed-paths.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_spec-gate.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_test-first-gate.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_branch-gate.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_pr-per-task-gate.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_e2e-merge-gate.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_remote-tracking-gate.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_secret-scan-gate.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_task-claim.js
+<span style="color:#a6e3a1">[OK]</span> PreToolUse/shtd_workflow-gate.js
+<span style="color:#a6e3a1">[OK]</span> PostToolUse/shtd_audit-logger.js
+<span style="color:#a6e3a1">[OK]</span> Stop/shtd_task-release.js
+<span style="color:#a6e3a1">[OK]</span> rules/shtd-audit-log.md
+</div>
+  </div>
+</div>
+</body></html>
