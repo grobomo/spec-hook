@@ -1,0 +1,58 @@
+name: add-workflows-to-hookrunner
+description: Move workflow engine from spec-hook to hook-runner as a first-class feature
+version: 1
+steps:
+  - id: spec
+    name: Write spec for hook-runner workflow feature
+    gate:
+      require_files: []
+    completion:
+      require_files: ["specs/005-add-workflows-to-hookrunner/spec.md"]
+  - id: tasks
+    name: Break spec into tasks
+    gate:
+      require_step: spec
+    completion:
+      require_files: ["specs/005-add-workflows-to-hookrunner/tasks.md"]
+  - id: engine
+    name: Port workflow engine to hook-runner
+    gate:
+      require_step: tasks
+    completion:
+      require_files: []
+  - id: gate-module
+    name: Add workflow-gate PreToolUse module to hook-runner
+    gate:
+      require_step: engine
+    completion:
+      require_files: []
+  - id: cli
+    name: Add workflow CLI commands to hook-runner setup.js
+    gate:
+      require_step: gate-module
+    completion:
+      require_files: []
+  - id: templates
+    name: Add built-in workflow templates
+    gate:
+      require_step: cli
+    completion:
+      require_files: []
+  - id: test
+    name: Test workflow engine end-to-end
+    gate:
+      require_step: templates
+    completion:
+      require_files: []
+  - id: meta-workflow
+    name: Create enforce-shtd meta-workflow
+    gate:
+      require_step: test
+    completion:
+      require_files: []
+  - id: update-shtd
+    name: Update spec-hook to delegate to hook-runner engine
+    gate:
+      require_step: meta-workflow
+    completion:
+      require_files: []
