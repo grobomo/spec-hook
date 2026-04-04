@@ -1,0 +1,18 @@
+┌─────────────────────────────────────────────────────────────
+│ SHTD Flow Evidence — 2026-04-04 02:48:53 UTC
+│ Mode: docker | Host: 3349f9d04ca6 | IP: 18.116.59.247
+│ User: root | Node: v20.20.2 | Python: 3.10.12
+│ Container: 3349f9d04ca6
+└─────────────────────────────────────────────────────────────
+
+$ git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>&1 || echo 'No upstream'
+fatal: no upstream configured for branch '001-test-feature'
+No upstream
+
+>>> Simulating Claude Write on untracked feature branch <<<
+Hook result: {
+  "decision": "block",
+  "reason": "[shtd] Branch \"001-test-feature\" doesn't track a remote. Run: git push -u origin 001-test-feature"
+}
+
+✗ BLOCKED: [shtd] Branch "001-test-feature" doesn't track a remote. Run: git push -u origin 001-test-feature
