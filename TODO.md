@@ -6,14 +6,19 @@ Portable, installable workflow enforcement system for Claude Code. One setup scr
 
 ## Status: Complete
 
-## Session Handoff
+## Completed (005: Workflows in hook-runner)
+- [x] T001 Spec and workflow YAML (PR #9)
+- [x] T002 Port workflow.js to hook-runner (PR #10)
+- [x] T003 Add workflow-gate PreToolUse module (PR #11)
+- [x] T004 Add --workflow CLI commands (PR #12)
+- [x] T005 Built-in templates: enforce-shtd.yml, cross-project-reset.yml (PR #13)
+- [x] T006 E2E tests — 9/9 lifecycle assertions (PR #14)
+- [x] T007 enforce-shtd meta-workflow — self-enforcing (PR #15)
+- [x] T008 Delegation verification (PR #16)
+- [x] T009 Final cross-project verification — 14/14 checks (PR #17)
+- [x] Hook-runner PR: grobomo/hook-runner#66
 
-User requested new project: **ccc-central** — Central monitoring dispatcher for Claude Code.
-- Created `~/Documents/ProjectsCL1/ccc-central/TODO.md` with architecture and tasks
-- Next: start new session in ccc-central project directory
-- Spec-hook is fully complete (T001-T027, 5 PRs merged, real evidence report)
-
-## Completed
+## Completed (earlier)
 
 - [x] T001-T021 (all core tasks — see git log)
 - [x] T022 Initial evidence report (PDF with tables, user rejected — needs real screenshots)
