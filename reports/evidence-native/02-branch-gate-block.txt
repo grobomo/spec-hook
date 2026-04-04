@@ -1,0 +1,16 @@
+┌─────────────────────────────────────────────────────────────
+│ SHTD Flow Evidence — 2026-04-04 02:48:38 UTC
+│ Mode: native | Host: ip-172-31-29-67 | IP: 18.116.59.247
+│ User: ubuntu | Node: v20.20.2 | Python: 3.10.12
+└─────────────────────────────────────────────────────────────
+
+$ git branch
+* master
+
+>>> Simulating Claude Write to src/app.js on main branch <<<
+Hook result: {
+  "decision": "block",
+  "reason": "[shtd] On master branch. Create a feature branch first: git checkout -b <NNN>-<feature-name>"
+}
+
+✗ BLOCKED: [shtd] On master branch. Create a feature branch first: git checkout -b <NNN>-<feature-name>

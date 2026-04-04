@@ -1,0 +1,28 @@
+┌─────────────────────────────────────────────────────────────
+│ SHTD Flow Evidence — 2026-04-04 02:48:53 UTC
+│ Mode: docker | Host: 3349f9d04ca6 | IP: 18.116.59.247
+│ User: root | Node: v20.20.2 | Python: 3.10.12
+│ Container: 3349f9d04ca6
+└─────────────────────────────────────────────────────────────
+
+$ bash install.sh --check
+
+
+=== Verifying SHTD Flow installation ===
+[0;32m[OK][0m lib/audit.js
+[0;32m[OK][0m lib/task_claims.py
+[0;32m[OK][0m lib/workflow.js
+[0;32m[OK][0m lib/get-audit.js
+[0;32m[OK][0m lib/allowed-paths.js
+[0;32m[OK][0m PreToolUse/shtd_spec-gate.js
+[0;32m[OK][0m PreToolUse/shtd_test-first-gate.js
+[0;32m[OK][0m PreToolUse/shtd_branch-gate.js
+[0;32m[OK][0m PreToolUse/shtd_pr-per-task-gate.js
+[0;32m[OK][0m PreToolUse/shtd_e2e-merge-gate.js
+[0;32m[OK][0m PreToolUse/shtd_remote-tracking-gate.js
+[0;32m[OK][0m PreToolUse/shtd_secret-scan-gate.js
+[0;32m[OK][0m PreToolUse/shtd_task-claim.js
+[0;32m[OK][0m PreToolUse/shtd_workflow-gate.js
+[0;32m[OK][0m PostToolUse/shtd_audit-logger.js
+[0;32m[OK][0m Stop/shtd_task-release.js
+[0;32m[OK][0m rules/shtd-audit-log.md

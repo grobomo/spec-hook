@@ -1,0 +1,12 @@
+┌─────────────────────────────────────────────────────────────
+│ SHTD Flow Evidence — 2026-04-04 02:48:38 UTC
+│ Mode: native | Host: ip-172-31-29-67 | IP: 18.116.59.247
+│ User: ubuntu | Node: v20.20.2 | Python: 3.10.12
+└─────────────────────────────────────────────────────────────
+
+$ ls specs/
+001-test-feature
+
+>>> Simulating Claude Write to src/app.js WITH specs/ <<<
+Hook result: null
+✓ ALLOWED

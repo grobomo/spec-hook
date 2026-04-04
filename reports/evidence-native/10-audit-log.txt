@@ -1,0 +1,12 @@
+┌─────────────────────────────────────────────────────────────
+│ SHTD Flow Evidence — 2026-04-04 02:48:39 UTC
+│ Mode: native | Host: ip-172-31-29-67 | IP: 18.116.59.247
+│ User: ubuntu | Node: v20.20.2 | Python: 3.10.12
+└─────────────────────────────────────────────────────────────
+
+$ tail -20 /home/ubuntu/.claude/shtd-flow/audit.jsonl
+{"ts":"2026-04-04T02:48:38.831Z","event":"code_blocked","project":"shtd-test-project","session":"","pid":9214,"reason":"no_specs_dir","file":"app.js"}
+{"ts":"2026-04-04T02:48:39.238Z","event":"merge_blocked","project":"shtd-test-project","session":"","pid":9336,"reason":"no_e2e","branch":"001-test-feature"}
+
+$ wc -l /home/ubuntu/.claude/shtd-flow/audit.jsonl
+2 /home/ubuntu/.claude/shtd-flow/audit.jsonl

@@ -1,0 +1,29 @@
+┌─────────────────────────────────────────────────────────────
+│ SHTD Flow Evidence — 2026-04-04 02:48:39 UTC
+│ Mode: native | Host: ip-172-31-29-67 | IP: 18.116.59.247
+│ User: ubuntu | Node: v20.20.2 | Python: 3.10.12
+└─────────────────────────────────────────────────────────────
+
+Workflow started. Current step: build
+State: {
+  "workflow": "test-pipeline",
+  "workflow_path": "/tmp/shtd-test-project/workflows/test-pipeline.yml",
+  "started_at": "2026-04-04T02:48:39.356Z",
+  "steps": {
+    "build": {
+      "status": "pending"
+    },
+    "test": {
+      "status": "pending"
+    },
+    "deploy": {
+      "status": "pending"
+    }
+  }
+}
+
+>>> Attempting to Write during 'deploy' step (should block — build not done) <<<
+Build step completed. Current step: test
+
+Hook result: null
+✓ ALLOWED (test step gate satisfied — build is done)
