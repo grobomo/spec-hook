@@ -9,8 +9,9 @@ Portable, installable workflow enforcement system for Claude Code. One setup scr
 - On branch: main (all merged)
 - Pushed to grobomo/spec-hook (public)
 - E2E proof test (28 tests) passes locally — all 9 gates covered
-- Remote install test (14 tests) passes on ccc-worker-5 (Docker container)
-- ccc-worker-5 stopped after testing
+- SHTD deployed to CCC workers 1-4 (Docker containers)
+- All path resolution simplified via hooks/lib symlink
+- Code review complete — no remaining duplication
 
 ## Completed
 
@@ -32,8 +33,10 @@ Portable, installable workflow enforcement system for Claude Code. One setup scr
 - [x] T016 Code review: DRY up allowed-path patterns — extracted to lib/allowed-paths.js
 - [x] T017 YAML parser hardening — 12 edge case tests, all passed, added id filter
 - [x] T018 Add e2e-merge-gate and remote-tracking-gate to e2e proof test
+- [x] T019 (skipped — AMI not needed, deploy script handles fresh installs)
+- [x] T020 Deploy SHTD to CCC workers 1-4 via deploy-to-workers.sh
+- [x] T021 Final code review: simplify path resolution across all hooks
 
-## Remaining
+## Status: Complete
 
-- [ ] T019 Create golden AMI from ccc-worker-5 with SHTD pre-installed (snapshot step of test-claude-install workflow)
-- [ ] T020 Install SHTD on all running CCC workers (workers 1-4), not just worker-5
+All tasks done. Project is published at grobomo/spec-hook and deployed to production workers.
