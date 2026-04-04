@@ -1,5 +1,6 @@
 archive/
 node_modules/
+SESSION_STATE.md
 .test-results/
 *.log
 .shtd-workflow-state.json

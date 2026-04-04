@@ -4,7 +4,15 @@
 
 Portable, installable workflow enforcement system for Claude Code. One setup script installs the entire spec→hook→test→PR pipeline with full audit trail. Includes enforceable workflows — ordered step pipelines backed by hooks.
 
-## Tasks
+## Session State
+
+- On branch: main (all merged)
+- Pushed to grobomo/spec-hook (public)
+- E2E proof test (28 tests) passes locally — all 9 gates covered
+- Remote install test (14 tests) passes on ccc-worker-5 (Docker container)
+- ccc-worker-5 stopped after testing
+
+## Completed
 
 - [x] T001 Create lib/audit.js — unified JSONL audit log
 - [x] T002 Create lib/task_claims.py — multi-tab negotiation with OS locking
@@ -18,4 +26,14 @@ Portable, installable workflow enforcement system for Claude Code. One setup scr
 - [x] T010 Update installer and CLAUDE.md for workflow engine
 - [x] T011 Run test-claude-install workflow on EC2 — validate full pipeline
 - [x] T012 Merge feature branches to main, push to grobomo/spec-hook
-- [ ] T013 Publish as installable plugin (README install instructions)
+- [x] T013 README.md with install instructions (merged to main)
+- [x] T014 E2E proof test — 28 tests proving real-world hook behavior (all 9 gates)
+- [x] T015 Code review: DRY up getAudit() helper — extracted to lib/get-audit.js
+- [x] T016 Code review: DRY up allowed-path patterns — extracted to lib/allowed-paths.js
+- [x] T017 YAML parser hardening — 12 edge case tests, all passed, added id filter
+- [x] T018 Add e2e-merge-gate and remote-tracking-gate to e2e proof test
+
+## Remaining
+
+- [ ] T019 Create golden AMI from ccc-worker-5 with SHTD pre-installed (snapshot step of test-claude-install workflow)
+- [ ] T020 Install SHTD on all running CCC workers (workers 1-4), not just worker-5
