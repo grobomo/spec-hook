@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const getAudit = require(path.join(__dirname, '..', '..', 'lib', 'get-audit.js'));
+const { isAllowed, CODE_INFRA } = require(path.join(__dirname, '..', '..', 'lib', 'allowed-paths.js'));
 
 module.exports = function(input) {
   const tool = input?.tool_name;
@@ -13,13 +14,7 @@ module.exports = function(input) {
   const filePath = input?.tool_input?.file_path || input?.tool_input?.path || '';
   const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
-  // Allow: specs, TODO, CLAUDE.md, rules, tests, configs, dotfiles, install/setup
-  const allowed = [
-    /specs\//i, /TODO\.md/i, /CLAUDE\.md/i, /SESSION_STATE/i, /\.claude\//i,
-    /rules\//i, /test/i, /\.github\//i, /config/i, /\.gitignore/i,
-    /package\.json/i, /install/i, /setup/i, /archive\//i,
-  ];
-  if (allowed.some(r => r.test(filePath))) return null;
+  if (isAllowed(filePath, ...CODE_INFRA)) return null;
 
   const specsDir = path.join(projectDir, 'specs');
   if (!fs.existsSync(specsDir)) {

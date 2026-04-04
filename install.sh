@@ -85,6 +85,9 @@ install_lib() {
   cp "${SCRIPT_DIR}/lib/get-audit.js" "${SHTD_HOME}/lib/get-audit.js"
   ok "lib/get-audit.js"
 
+  cp "${SCRIPT_DIR}/lib/allowed-paths.js" "${SHTD_HOME}/lib/allowed-paths.js"
+  ok "lib/allowed-paths.js"
+
   # Symlink so hooks can resolve lib/ via __dirname/../../lib/
   # Installed hooks: ~/.claude/hooks/run-modules/{Event}/ → ../../lib/ = ~/.claude/hooks/lib/
   # Symlink target: ~/.claude/shtd-flow/lib/
@@ -144,7 +147,7 @@ verify_install() {
   local errors=0
 
   # Check lib files
-  for f in audit.js task_claims.py workflow.js get-audit.js; do
+  for f in audit.js task_claims.py workflow.js get-audit.js allowed-paths.js; do
     if [ -f "${SHTD_HOME}/lib/${f}" ]; then
       ok "lib/${f}"
     else

@@ -4,6 +4,7 @@
 // gate must be satisfied before code edits proceed.
 
 const path = require('path');
+const { isAllowed, CODE_INFRA } = require(path.join(__dirname, '..', '..', 'lib', 'allowed-paths.js'));
 
 function getWorkflow() {
   const candidates = [
@@ -23,14 +24,7 @@ module.exports = function(input) {
   const filePath = input?.tool_input?.file_path || input?.tool_input?.path || '';
   const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
-  // Always allow: specs, tests, config, docs, workflow definitions
-  const allowed = [
-    /specs\//i, /test/i, /TODO\.md/i, /CLAUDE\.md/i, /SESSION_STATE/i,
-    /\.claude\//i, /rules\//i, /\.github\//i, /config/i, /\.gitignore/i,
-    /package\.json/i, /install/i, /setup/i, /archive\//i, /workflows\//i,
-    /\.shtd-workflow/i,
-  ];
-  if (allowed.some(r => r.test(filePath))) return null;
+  if (isAllowed(filePath, ...CODE_INFRA, /workflows\//i, /\.shtd-workflow/i)) return null;
 
   const wf = getWorkflow();
   if (!wf) return null;

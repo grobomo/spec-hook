@@ -3,6 +3,8 @@
 // ENFORCES: Step 6 — code edits must be on a feature/task branch, never main.
 
 const { execSync } = require('child_process');
+const path = require('path');
+const { isAllowed } = require(path.join(__dirname, '..', '..', 'lib', 'allowed-paths.js'));
 
 module.exports = function(input) {
   const tool = input?.tool_name;
@@ -11,12 +13,7 @@ module.exports = function(input) {
   const filePath = input?.tool_input?.file_path || input?.tool_input?.path || '';
   const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
-  // Allow non-code files on any branch
-  const allowed = [
-    /TODO\.md/i, /CLAUDE\.md/i, /SESSION_STATE/i, /\.claude\//i, /rules\//i,
-    /\.github\//i, /\.gitignore/i, /archive\//i,
-  ];
-  if (allowed.some(r => r.test(filePath))) return null;
+  if (isAllowed(filePath)) return null;
 
   try {
     const branch = execSync('git rev-parse --abbrev-ref HEAD', {

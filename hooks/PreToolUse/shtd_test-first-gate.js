@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 
 const getAudit = require(path.join(__dirname, '..', '..', 'lib', 'get-audit.js'));
+const { isAllowed, CODE_INFRA } = require(path.join(__dirname, '..', '..', 'lib', 'allowed-paths.js'));
 
 function findCurrentTask(projectDir) {
   // Check task-claims first
@@ -62,13 +63,7 @@ module.exports = function(input) {
   const filePath = input?.tool_input?.file_path || input?.tool_input?.path || '';
   const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
-  // Allow: test files themselves, specs, config, docs
-  const allowed = [
-    /test/i, /spec/i, /TODO\.md/i, /CLAUDE\.md/i, /SESSION_STATE/i,
-    /\.claude\//i, /rules\//i, /\.github\//i, /config/i, /\.gitignore/i,
-    /package\.json/i, /install/i, /setup/i, /archive\//i,
-  ];
-  if (allowed.some(r => r.test(filePath))) return null;
+  if (isAllowed(filePath, ...CODE_INFRA)) return null;
 
   const taskId = findCurrentTask(projectDir);
   if (!taskId) return null; // No claimed task — can't enforce

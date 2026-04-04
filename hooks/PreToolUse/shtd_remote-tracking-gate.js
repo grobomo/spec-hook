@@ -3,6 +3,8 @@
 // ENFORCES: Step 1 — branch must track a remote before code edits.
 
 const { execSync } = require('child_process');
+const path = require('path');
+const { isAllowed, CODE_INFRA } = require(path.join(__dirname, '..', '..', 'lib', 'allowed-paths.js'));
 
 module.exports = function(input) {
   const tool = input?.tool_name;
@@ -10,12 +12,7 @@ module.exports = function(input) {
 
   const filePath = input?.tool_input?.file_path || input?.tool_input?.path || '';
 
-  // Allow non-code files
-  const allowed = [
-    /TODO\.md/i, /CLAUDE\.md/i, /SESSION_STATE/i, /\.claude\//i, /rules\//i,
-    /\.github\//i, /\.gitignore/i, /archive\//i, /specs\//i, /test/i,
-  ];
-  if (allowed.some(r => r.test(filePath))) return null;
+  if (isAllowed(filePath, ...CODE_INFRA)) return null;
 
   const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
