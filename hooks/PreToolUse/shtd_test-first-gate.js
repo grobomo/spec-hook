@@ -73,7 +73,7 @@ module.exports = function(input) {
       reason: 'no_test_for_task', task: taskId, file: path.basename(filePath)
     });
     return {
-      blocked: true,
+      decision: 'block',
       reason: `[shtd] Test-first: no test found for ${taskId}. Write a test in scripts/test/ or test/ before implementation code.`
     };
   }

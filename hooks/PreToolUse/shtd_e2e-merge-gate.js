@@ -44,7 +44,7 @@ module.exports = function(input) {
   if (!markers.some(m => fs.existsSync(m))) {
     getAudit().logEvent('merge_blocked', { reason: 'no_e2e', branch });
     return {
-      blocked: true,
+      decision: 'block',
       reason: `[shtd] Feature branch "${branch}" has no E2E test results. Run integration tests and create .test-results/${branch}.passed before merging to main.`
     };
   }

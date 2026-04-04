@@ -19,14 +19,14 @@ module.exports = function(input) {
   const specsDir = path.join(projectDir, 'specs');
   if (!fs.existsSync(specsDir)) {
     getAudit().logEvent('code_blocked', { reason: 'no_specs_dir', file: path.basename(filePath) });
-    return { blocked: true, reason: '[shtd] No specs/ directory. Create a spec first: specs/<NNN>-<feature>/spec.md' };
+    return { decision: 'block', reason: '[shtd] No specs/ directory. Create a spec first: specs/<NNN>-<feature>/spec.md' };
   }
 
   try {
     const specs = fs.readdirSync(specsDir).filter(f =>
       fs.statSync(path.join(specsDir, f)).isDirectory());
     if (specs.length === 0) {
-      return { blocked: true, reason: '[shtd] specs/ is empty. Define at least one spec before writing code.' };
+      return { decision: 'block', reason: '[shtd] specs/ is empty. Define at least one spec before writing code.' };
     }
   } catch(e) {}
 

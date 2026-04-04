@@ -59,7 +59,7 @@ section "1. spec-gate: blocks code edit without specs/"
 
 RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_spec-gate.js" \
   '{"tool_name":"Write","tool_input":{"file_path":"'"${FAKE_DIR}/src/app.js"'"}}')
-echo "$RESULT" | grep -q '"blocked":true' \
+echo "$RESULT" | grep -q '"decision":"block"' \
   && pass "Write to src/app.js BLOCKED — no specs/ directory" \
   || fail "Expected block, got: $RESULT"
 
@@ -79,7 +79,7 @@ section "2. branch-gate: blocks code edit on main"
 
 RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_branch-gate.js" \
   '{"tool_name":"Edit","tool_input":{"file_path":"'"${FAKE_DIR}/src/app.js"'"}}')
-echo "$RESULT" | grep -q '"blocked":true' \
+echo "$RESULT" | grep -q '"decision":"block"' \
   && pass "Edit on main BLOCKED" \
   || fail "Expected block on main, got: $RESULT"
 
@@ -105,7 +105,7 @@ section "3. pr-per-task-gate: requires task ID in PR title"
 
 RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_pr-per-task-gate.js" \
   '{"tool_name":"Bash","tool_input":{"command":"gh pr create --title '\''Add new feature'\'' --body '\''stuff'\''."}}')
-echo "$RESULT" | grep -q '"blocked":true' \
+echo "$RESULT" | grep -q '"decision":"block"' \
   && pass "PR without task ID BLOCKED" \
   || fail "Expected block, got: $RESULT"
 
@@ -121,7 +121,7 @@ section "4. secret-scan-gate: blocks push without secret-scan.yml"
 
 RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_secret-scan-gate.js" \
   '{"tool_name":"Bash","tool_input":{"command":"git push origin main"}}')
-echo "$RESULT" | grep -q '"blocked":true' \
+echo "$RESULT" | grep -q '"decision":"block"' \
   && pass "Push without secret-scan.yml BLOCKED" \
   || fail "Expected block, got: $RESULT"
 
@@ -141,7 +141,7 @@ section "5. remote-tracking-gate: blocks edits on untracked branch"
 # We're on 001-add-feature which has no remote tracking
 RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_remote-tracking-gate.js" \
   '{"tool_name":"Write","tool_input":{"file_path":"'"${FAKE_DIR}/src/app.js"'"}}')
-echo "$RESULT" | grep -q '"blocked":true' \
+echo "$RESULT" | grep -q '"decision":"block"' \
   && pass "Write on untracked branch BLOCKED" \
   || fail "Expected block on untracked branch, got: $RESULT"
 
@@ -173,7 +173,7 @@ section "6. e2e-merge-gate: blocks feature merge without evidence"
 # Try to merge feature branch to main without E2E evidence
 RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_e2e-merge-gate.js" \
   '{"tool_name":"Bash","tool_input":{"command":"gh pr merge --squash"}}')
-echo "$RESULT" | grep -q '"blocked":true' \
+echo "$RESULT" | grep -q '"decision":"block"' \
   && pass "Feature merge BLOCKED — no .test-results/ evidence" \
   || fail "Expected block, got: $RESULT"
 
@@ -272,7 +272,7 @@ node -e "
 # Deploy gate should block — test step not completed
 RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_workflow-gate.js" \
   '{"tool_name":"Write","tool_input":{"file_path":"'"${FAKE_DIR}/src/deploy.js"'"}}')
-echo "$RESULT" | grep -q '"blocked":true' \
+echo "$RESULT" | grep -q '"decision":"block"' \
   && pass "Write BLOCKED — deploy gate requires test step" \
   || fail "Expected block for skipped step, got: $RESULT"
 

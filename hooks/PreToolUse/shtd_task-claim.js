@@ -78,7 +78,7 @@ module.exports = function(input) {
     } else if (parsed.reason === 'all_claimed') {
       const summary = Object.entries(parsed.claimed || {}).map(([t, s]) => `${t}→${s}`).join(', ');
       return {
-        blocked: true,
+        decision: 'block',
         reason: `[shtd] All tasks claimed by other sessions (${summary}). Work on code review, docs, or wait for a task to free up.`
       };
     }

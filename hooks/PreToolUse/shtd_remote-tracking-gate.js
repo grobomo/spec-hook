@@ -30,7 +30,7 @@ module.exports = function(input) {
       });
     } catch(e) {
       return {
-        blocked: true,
+        decision: 'block',
         reason: `[shtd] Branch "${branch}" doesn't track a remote. Run: git push -u origin ${branch}`
       };
     }

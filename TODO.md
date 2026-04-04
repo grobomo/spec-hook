@@ -4,39 +4,34 @@
 
 Portable, installable workflow enforcement system for Claude Code. One setup script installs the entire spec→hook→test→PR pipeline with full audit trail. Includes enforceable workflows — ordered step pipelines backed by hooks.
 
-## Session State
+## Status: Complete
 
-- On branch: main (all merged)
-- Pushed to grobomo/spec-hook (public)
-- E2E proof test (28 tests) passes locally — all 9 gates covered
-- SHTD deployed to CCC workers 1-4 (Docker containers)
-- All path resolution simplified via hooks/lib symlink
-- Code review complete — no remaining duplication
+All tasks done. 12-page evidence PDF with real worker screenshots.
 
 ## Completed
 
-- [x] T001 Create lib/audit.js — unified JSONL audit log
-- [x] T002 Create lib/task_claims.py — multi-tab negotiation with OS locking
-- [x] T003 Create hooks — all PreToolUse/PostToolUse/Stop modules
-- [x] T004 Create install.sh — cross-platform setup (Windows/Mac/Linux)
-- [x] T005 Create rules, CLAUDE.md, status CLI, secret-scan CI, .gitignore
-- [x] T006 Workflow engine (lib/workflow.js) — YAML parser, state manager, step validator
-- [x] T007 Workflow gate hook (shtd_workflow-gate.js) — enforce step order
-- [x] T008 Workflow CLI (shtd-workflow.sh) — start/status/complete/reset
-- [x] T009 First workflow: test-claude-install with step scripts
-- [x] T010 Update installer and CLAUDE.md for workflow engine
-- [x] T011 Run test-claude-install workflow on EC2 — validate full pipeline
-- [x] T012 Merge feature branches to main, push to grobomo/spec-hook
-- [x] T013 README.md with install instructions (merged to main)
-- [x] T014 E2E proof test — 28 tests proving real-world hook behavior (all 9 gates)
-- [x] T015 Code review: DRY up getAudit() helper — extracted to lib/get-audit.js
-- [x] T016 Code review: DRY up allowed-path patterns — extracted to lib/allowed-paths.js
-- [x] T017 YAML parser hardening — 12 edge case tests, all passed, added id filter
-- [x] T018 Add e2e-merge-gate and remote-tracking-gate to e2e proof test
-- [x] T019 (skipped — AMI not needed, deploy script handles fresh installs)
-- [x] T020 Deploy SHTD to CCC workers 1-4 via deploy-to-workers.sh
-- [x] T021 Final code review: simplify path resolution across all hooks
+- [x] T001-T021 (all core tasks — see git log)
+- [x] T022 Initial evidence report (PDF with tables, user rejected — needs real screenshots)
+- [x] Global MCP config — mcp-manager added to ~/.claude.json with `claude mcp add -s user`
+- [x] T023 Evidence report with REAL screenshots + critical bug fix
+  - **Critical bug found and fixed**: All 10 hook modules used `{ blocked: true }` return format,
+    but hook-runner expects `{ decision: 'block' }`. Hooks were silently not blocking in production.
+    Fixed all modules to use correct `decision: 'block'` format. Updated tests to match.
+  - Deployed fixed hooks to Worker 1 via scripts/deploy-to-worker.sh
+  - Captured 5 live evidence scenarios from EC2 Worker 1 (Docker container):
+    1. install.sh --check — all 16 components verified OK
+    2. branch-gate BLOCKS Write on master — returns JSON decision:block
+    3. spec-gate BLOCKS Write without specs/ — returns JSON decision:block
+    4. All gates PASS with proper setup (feature branch + specs + tracking)
+    5. remote-tracking-gate BLOCKS untracked branch
+  - Desktop screenshots with taskbar clock (evidence-terminal.png, e2e-local-tests.png)
+  - 28/28 local e2e tests pass with new decision format
+  - 12-page PDF: reports/shtd_flow_evidence_20260403_205805.pdf
 
-## Status: Complete
+## Scripts Created
 
-All tasks done. Project is published at grobomo/spec-hook and deployed to production workers.
+- `scripts/capture-evidence.sh` — Run real hook modules on worker containers, capture output
+- `scripts/deploy-to-worker.sh` — Deploy SHTD to worker Docker containers
+- `scripts/check-worker-install.sh` — Verify SHTD installation on workers
+- `scripts/take-screenshot.sh` — Desktop/command/remote screenshot tool (Python PIL)
+- `scripts/generate-evidence-report.py` — Generate 12-page PDF with pm-report skill
