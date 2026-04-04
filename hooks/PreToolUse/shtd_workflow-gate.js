@@ -7,13 +7,7 @@ const path = require('path');
 const { isAllowed, CODE_INFRA } = require(path.join(__dirname, '..', '..', 'lib', 'allowed-paths.js'));
 
 function getWorkflow() {
-  const candidates = [
-    path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'shtd-flow', 'lib', 'workflow.js'),
-    path.join(__dirname, '..', '..', 'lib', 'workflow.js'),
-  ];
-  for (const c of candidates) {
-    try { return require(c); } catch(e) {}
-  }
+  try { return require(path.join(__dirname, '..', '..', 'lib', 'workflow.js')); } catch(e) {}
   return null;
 }
 

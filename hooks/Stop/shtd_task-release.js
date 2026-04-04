@@ -13,15 +13,8 @@ module.exports = function(input) {
   const sessionId = process.env.CLAUDE_SESSION_ID
     || process.env.CLAUDE_CONVERSATION_ID || '';
 
-  const candidates = [
-    path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'shtd-flow', 'lib', 'task_claims.py'),
-    path.join(__dirname, '..', '..', 'lib', 'task_claims.py'),
-  ];
-  let script;
-  for (const c of candidates) {
-    try { fs.accessSync(c); script = c; break; } catch(e) {}
-  }
-  if (!script) return null;
+  const script = path.join(__dirname, '..', '..', 'lib', 'task_claims.py');
+  try { fs.accessSync(script); } catch(e) { return null; }
 
   // Find which task this session claimed
   try {

@@ -15,14 +15,8 @@ let lastCheckTs = 0;
 const CHECK_INTERVAL_MS = 30000; // Re-check every 30s at most
 
 function findScript() {
-  const candidates = [
-    path.join(process.env.HOME || process.env.USERPROFILE || '', '.claude', 'shtd-flow', 'lib', 'task_claims.py'),
-    path.join(__dirname, '..', '..', 'lib', 'task_claims.py'),
-  ];
-  for (const c of candidates) {
-    try { fs.accessSync(c); return c; } catch(e) {}
-  }
-  return null;
+  const p = path.join(__dirname, '..', '..', 'lib', 'task_claims.py');
+  try { fs.accessSync(p); return p; } catch(e) { return null; }
 }
 
 module.exports = function(input) {
