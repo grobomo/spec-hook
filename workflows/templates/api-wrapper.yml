@@ -1,0 +1,46 @@
+name: api-wrapper
+description: Build a REST API wrapper library (client SDK, tests, docs)
+version: 1
+steps:
+  - id: spec
+    name: Write API spec (endpoints, auth, error handling)
+    gate:
+      require_files: []
+    completion:
+      require_files: ["specs/001-api-wrapper/spec.md"]
+  - id: plan
+    name: Plan implementation (modules, dependencies, test strategy)
+    gate:
+      require_step: spec
+    completion:
+      require_files: ["specs/001-api-wrapper/plan.md"]
+  - id: tasks
+    name: Generate task list from plan
+    gate:
+      require_step: plan
+    completion:
+      require_files: ["specs/001-api-wrapper/tasks.md"]
+  - id: client
+    name: Implement API client (auth, endpoints, error handling)
+    gate:
+      require_step: tasks
+    completion:
+      require_files: ["src/client.*"]
+  - id: tests
+    name: Write and run tests (unit + integration)
+    gate:
+      require_step: client
+    completion:
+      require_files: [".test-results/api-wrapper.passed"]
+  - id: docs
+    name: Write usage docs (README, examples)
+    gate:
+      require_step: tests
+    completion:
+      require_files: ["README.md"]
+  - id: publish
+    name: Package and publish (npm/pypi/github release)
+    gate:
+      require_step: docs
+    completion:
+      require_files: [".github/publish.json"]

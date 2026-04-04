@@ -1,0 +1,52 @@
+name: project-onboarding
+description: Bootstrap a new project with SHTD workflow (git, CI, first spec)
+version: 1
+steps:
+  - id: init
+    name: Initialize git repo and basic structure
+    gate:
+      require_files: []
+    completion:
+      require_files: [".git/HEAD"]
+  - id: publish
+    name: Configure GitHub account and visibility
+    gate:
+      require_step: init
+    completion:
+      require_files: [".github/publish.json"]
+  - id: gitconfig
+    name: Set local git user matching publish.json account
+    gate:
+      require_step: publish
+    completion:
+      require_files: [".git/config"]
+  - id: ci
+    name: Add secret-scan CI workflow
+    gate:
+      require_step: gitconfig
+    completion:
+      require_files: [".github/workflows/secret-scan.yml"]
+  - id: gitignore
+    name: Create .gitignore (archive/, node_modules/, .env, etc.)
+    gate:
+      require_step: ci
+    completion:
+      require_files: [".gitignore"]
+  - id: spec
+    name: Write first feature spec
+    gate:
+      require_step: gitignore
+    completion:
+      require_files: ["specs/001-*/spec.md"]
+  - id: branch
+    name: Create feature branch and push
+    gate:
+      require_step: spec
+    completion:
+      require_files: []
+  - id: readme
+    name: Write project README
+    gate:
+      require_step: branch
+    completion:
+      require_files: ["README.md"]

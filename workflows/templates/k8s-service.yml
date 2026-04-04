@@ -1,0 +1,52 @@
+name: k8s-service
+description: Deploy a containerized service to Kubernetes (Dockerfile, manifests, CI)
+version: 1
+steps:
+  - id: spec
+    name: Write service spec (purpose, endpoints, dependencies)
+    gate:
+      require_files: []
+    completion:
+      require_files: ["specs/001-service/spec.md"]
+  - id: plan
+    name: Plan implementation (container design, K8s resources, networking)
+    gate:
+      require_step: spec
+    completion:
+      require_files: ["specs/001-service/plan.md"]
+  - id: tasks
+    name: Generate task list from plan
+    gate:
+      require_step: plan
+    completion:
+      require_files: ["specs/001-service/tasks.md"]
+  - id: dockerfile
+    name: Build Dockerfile (multi-stage, minimal base, health check)
+    gate:
+      require_step: tasks
+    completion:
+      require_files: ["Dockerfile"]
+  - id: manifests
+    name: Write K8s manifests (deployment, service, configmap, secrets)
+    gate:
+      require_step: dockerfile
+    completion:
+      require_files: ["k8s/deployment.yaml"]
+  - id: scripts
+    name: Create deploy and health check scripts
+    gate:
+      require_step: manifests
+    completion:
+      require_files: ["scripts/deploy.sh"]
+  - id: test
+    name: Build image, deploy to test namespace, verify health
+    gate:
+      require_step: scripts
+    completion:
+      require_files: [".test-results/k8s-deploy.passed"]
+  - id: ci
+    name: Add CI pipeline (build, test, push to registry)
+    gate:
+      require_step: test
+    completion:
+      require_files: [".github/workflows/ci.yml"]
