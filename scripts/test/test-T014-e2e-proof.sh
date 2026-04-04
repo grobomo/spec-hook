@@ -135,7 +135,74 @@ RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_secret-scan-gate.js" \
   || fail "Expected allow, got: $RESULT"
 
 # ================================================================
-section "5. workflow-gate: enforces step order"
+section "5. remote-tracking-gate: blocks edits on untracked branch"
+# ================================================================
+
+# We're on 001-add-feature which has no remote tracking
+RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_remote-tracking-gate.js" \
+  '{"tool_name":"Write","tool_input":{"file_path":"'"${FAKE_DIR}/src/app.js"'"}}')
+echo "$RESULT" | grep -q '"blocked":true' \
+  && pass "Write on untracked branch BLOCKED" \
+  || fail "Expected block on untracked branch, got: $RESULT"
+
+echo "$RESULT" | grep -q 'git push -u' \
+  && pass "Block message suggests git push -u" \
+  || fail "Missing push -u hint in: $RESULT"
+
+# Docs should be allowed even on untracked branch
+RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_remote-tracking-gate.js" \
+  '{"tool_name":"Write","tool_input":{"file_path":"'"${FAKE_DIR}/TODO.md"'"}}')
+[ "$RESULT" = "null" ] \
+  && pass "TODO.md ALLOWED on untracked branch" \
+  || fail "Expected allow for docs, got: $RESULT"
+
+# Main should always be allowed (it always tracks remote)
+git checkout -q main
+RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_remote-tracking-gate.js" \
+  '{"tool_name":"Write","tool_input":{"file_path":"'"${FAKE_DIR}/src/app.js"'"}}')
+[ "$RESULT" = "null" ] \
+  && pass "Write on main ALLOWED (always has tracking)" \
+  || fail "Expected allow on main, got: $RESULT"
+
+git checkout -q 001-add-feature
+
+# ================================================================
+section "6. e2e-merge-gate: blocks feature merge without evidence"
+# ================================================================
+
+# Try to merge feature branch to main without E2E evidence
+RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_e2e-merge-gate.js" \
+  '{"tool_name":"Bash","tool_input":{"command":"gh pr merge --squash"}}')
+echo "$RESULT" | grep -q '"blocked":true' \
+  && pass "Feature merge BLOCKED — no .test-results/ evidence" \
+  || fail "Expected block, got: $RESULT"
+
+echo "$RESULT" | grep -q 'test-results' \
+  && pass "Block message mentions .test-results/" \
+  || fail "Missing test-results hint in: $RESULT"
+
+# Create E2E evidence
+mkdir -p .test-results
+touch ".test-results/001-add-feature.passed"
+
+RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_e2e-merge-gate.js" \
+  '{"tool_name":"Bash","tool_input":{"command":"gh pr merge --squash"}}')
+[ "$RESULT" = "null" ] \
+  && pass "Feature merge ALLOWED — evidence exists" \
+  || fail "Expected allow with evidence, got: $RESULT"
+
+# Task branches (NNN-TNNN-slug) should NOT be gated
+git checkout -q -b 001-T001-add-login
+RESULT=$(invoke_hook "${HOOKS_DIR}/PreToolUse/shtd_e2e-merge-gate.js" \
+  '{"tool_name":"Bash","tool_input":{"command":"gh pr merge --squash"}}')
+[ "$RESULT" = "null" ] \
+  && pass "Task branch merge ALLOWED (not feature branch)" \
+  || fail "Expected allow for task branch, got: $RESULT"
+
+git checkout -q 001-add-feature
+
+# ================================================================
+section "7. workflow-gate: enforces step order"
 # ================================================================
 
 # Create a workflow
@@ -214,7 +281,7 @@ echo "$RESULT" | grep -q 'test' \
   || fail "Block message doesn't explain what's missing: $RESULT"
 
 # ================================================================
-section "6. audit-logger: captures workflow events"
+section "8. audit-logger: captures workflow events"
 # ================================================================
 
 # Set up audit to write to our temp dir
@@ -268,7 +335,7 @@ echo "$FIRST" | grep -q '"ts"' && echo "$FIRST" | grep -q '"project"' \
   || fail "Missing required fields in: $FIRST"
 
 # ================================================================
-section "7. Full workflow lifecycle via CLI"
+section "9. Full workflow lifecycle via CLI"
 # ================================================================
 
 CLI="${NP}/scripts/shtd-workflow.sh"
