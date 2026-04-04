@@ -1,0 +1,52 @@
+name: cli-tool
+description: Build a command-line tool (arg parsing, output, tests, packaging)
+version: 1
+steps:
+  - id: spec
+    name: Write tool spec (commands, flags, input/output format)
+    gate:
+      require_files: []
+    completion:
+      require_files: ["specs/001-cli-tool/spec.md"]
+  - id: plan
+    name: Plan implementation (modules, dependencies, UX)
+    gate:
+      require_step: spec
+    completion:
+      require_files: ["specs/001-cli-tool/plan.md"]
+  - id: tasks
+    name: Generate task list from plan
+    gate:
+      require_step: plan
+    completion:
+      require_files: ["specs/001-cli-tool/tasks.md"]
+  - id: core
+    name: Implement core logic (arg parsing, main commands)
+    gate:
+      require_step: tasks
+    completion:
+      require_files: ["src/main.*"]
+  - id: output
+    name: Add output formatting (text, JSON, table modes)
+    gate:
+      require_step: core
+    completion:
+      require_files: ["src/output.*"]
+  - id: tests
+    name: Write and run tests (unit + CLI integration)
+    gate:
+      require_step: output
+    completion:
+      require_files: [".test-results/cli-tool.passed"]
+  - id: docs
+    name: Write usage docs (README, --help text, examples)
+    gate:
+      require_step: tests
+    completion:
+      require_files: ["README.md"]
+  - id: package
+    name: Package for distribution (npm/pip/brew/binary)
+    gate:
+      require_step: docs
+    completion:
+      require_files: [".github/publish.json"]

@@ -101,6 +101,23 @@ steps:
       require_files: ["deploy-receipt.txt"]
 ```
 
+### Workflow Templates
+
+Pre-built workflows for common project types in `workflows/templates/`:
+
+| Template | Use Case |
+|----------|----------|
+| `api-wrapper.yml` | REST API client library (auth, endpoints, tests, docs) |
+| `k8s-service.yml` | Containerized K8s service (Dockerfile, manifests, CI) |
+| `cli-tool.yml` | Command-line tool (arg parsing, output, tests, packaging) |
+| `project-onboarding.yml` | Bootstrap new project (git, CI, publish.json, first spec) |
+
+```bash
+# Start from a template
+cp workflows/templates/api-wrapper.yml workflows/my-api.yml
+bash ~/.claude/shtd-flow/scripts/shtd-workflow.sh start my-api
+```
+
 ## Multi-Tab Task Negotiation
 
 When multiple Claude Code sessions work on the same project:
