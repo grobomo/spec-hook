@@ -29,37 +29,37 @@ echo "Claude: $(which claude 2>/dev/null || echo missing)"
 echo ""
 
 echo "--- ~/.claude/ structure ---"
-ls -la /root/.claude/ 2>/dev/null || echo "/root/.claude/ not found"
+ls -la $HOME/.claude/ 2>/dev/null || echo "$HOME/.claude/ not found"
 echo ""
 
 echo "--- ~/.claude/hooks/ ---"
-find /root/.claude/hooks/ -type f 2>/dev/null | head -30 || echo "No hooks dir"
+find $HOME/.claude/hooks/ -type f 2>/dev/null | head -30 || echo "No hooks dir"
 echo ""
 
 echo "--- ~/.claude/shtd-flow/ ---"
-ls -la /root/.claude/shtd-flow/ 2>/dev/null || echo "shtd-flow dir not found"
+ls -la $HOME/.claude/shtd-flow/ 2>/dev/null || echo "shtd-flow dir not found"
 echo ""
 
 echo "--- ~/.claude/shtd-flow/lib/ ---"
-ls -la /root/.claude/shtd-flow/lib/ 2>/dev/null || echo "lib dir not found"
+ls -la $HOME/.claude/shtd-flow/lib/ 2>/dev/null || echo "lib dir not found"
 echo ""
 
 echo "--- ~/.claude/shtd-flow/hooks/ ---"
-find /root/.claude/shtd-flow/hooks/ -type f 2>/dev/null | head -30 || echo "No shtd-flow hooks"
+find $HOME/.claude/shtd-flow/hooks/ -type f 2>/dev/null | head -30 || echo "No shtd-flow hooks"
 echo ""
 
 echo "--- Hook runner (run-pretooluse.js, run-posttooluse.js, run-stop.js) ---"
 for f in run-pretooluse.js run-posttooluse.js run-stop.js; do
-  found=$(find /root/.claude/ -name "$f" 2>/dev/null | head -3)
+  found=$(find $HOME/.claude/ -name "$f" 2>/dev/null | head -3)
   echo "$f: ${found:-NOT FOUND}"
 done
 echo ""
 
 echo "--- settings.json hook config ---"
-cat /root/.claude/settings.json 2>/dev/null | python3 -m json.tool 2>/dev/null || cat /root/.claude/settings.json 2>/dev/null || echo "No settings.json"
+cat $HOME/.claude/settings.json 2>/dev/null | python3 -m json.tool 2>/dev/null || cat $HOME/.claude/settings.json 2>/dev/null || echo "No settings.json"
 echo ""
 
 echo "--- install.sh permissions ---"
-ls -la /root/.claude/shtd-flow/install.sh 2>/dev/null || echo "install.sh not found"
+ls -la $HOME/.claude/shtd-flow/install.sh 2>/dev/null || echo "install.sh not found"
 ' 2>&1
 EOF
