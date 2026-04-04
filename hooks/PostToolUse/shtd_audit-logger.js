@@ -17,7 +17,7 @@ module.exports = function(input) {
       audit.logEvent('spec_created', { file: path.basename(filePath) });
     } else if (/specs\/.*tasks\.md/i.test(filePath)) {
       audit.logEvent('tasks_defined', { file: path.basename(filePath) });
-    } else if (/test/i.test(filePath) && !/node_modules/.test(filePath)) {
+    } else if (/[\/\\]tests?[\/\\]/i.test(filePath) && !/node_modules/.test(filePath)) {
       audit.logEvent('test_created', { file: path.basename(filePath) });
     }
   }

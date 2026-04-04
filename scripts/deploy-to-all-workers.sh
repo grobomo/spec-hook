@@ -5,8 +5,9 @@
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$SCRIPT_DIR/worker-config.sh"
 
-for w in 1 2 3 4; do
+for w in $ALL_WORKERS; do
   echo ""
   echo "========================================="
   echo "  Deploying to Worker $w"
@@ -19,7 +20,7 @@ echo "========================================="
 echo "  Deployment complete — verifying all"
 echo "========================================="
 
-for w in 1 2 3 4; do
+for w in $ALL_WORKERS; do
   echo ""
   echo "--- Worker $w ---"
   bash "$SCRIPT_DIR/check-worker-install.sh" "$w" 2>&1 | grep -E "\[OK\]|\[FAIL\]|not found|error" | head -5

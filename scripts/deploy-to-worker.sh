@@ -9,13 +9,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 WORKER="${1:-1}"
-KEY_DIR="$HOME/.ssh/ccc-keys"
 
-declare -A IPS=([1]="18.219.224.145" [2]="18.223.188.176" [3]="3.143.229.17" [4]="52.14.228.211")
-IP="${IPS[$WORKER]:-}"
-[ -z "$IP" ] && echo "Unknown worker: $WORKER" && exit 1
-KEY="$KEY_DIR/worker-${WORKER}.pem"
-SSH_OPTS="-o StrictHostKeyChecking=no -o ConnectTimeout=10 -i $KEY"
+source "$SCRIPT_DIR/worker-config.sh"
+IP=$(resolve_worker "$WORKER")
+SSH_OPTS=$(ssh_opts_for "$WORKER")
 
 echo "=== Deploying SHTD Flow to Worker $WORKER ($IP) ==="
 
